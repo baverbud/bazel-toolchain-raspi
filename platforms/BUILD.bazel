@@ -14,6 +14,11 @@
 
 package(default_visibility = ["//visibility:public"])
 
+constraint_value(
+    name = "armv6k",
+    constraint_setting = "@platforms//cpu:cpu",
+)
+
 platform(
     name = "linux-x86_64",
     constraint_values = [
@@ -27,6 +32,14 @@ platform(
     constraint_values = [
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
+    ],
+)
+
+platform(
+    name = "linux-armv6k",
+    constraint_values = [
+        "@platforms//os:linux",
+        "//platforms:armv6k",
     ],
 )
 

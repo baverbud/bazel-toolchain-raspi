@@ -250,12 +250,18 @@ def _cc_toolchains_str(
 
     cc_toolchains_str = ""
     toolchain_names = []
-    for (target_os, target_arch) in _supported_targets:
+    for (target_os, target_arch, target_platform) in _supported_targets:
         suffix = "{}-{}".format(target_arch, target_os)
+
+        resolved_platform = target_platform
+        if target_platform[0] == "/":
+            resolved_platform = "@{}{}".format(Label("//platforms:BUILD.bazel").workspace_name, target_platform)
+        
         cc_toolchain_str = _cc_toolchain_str(
             suffix,
             target_os,
             target_arch,
+            resolved_platform,
             toolchain_info,
             use_absolute_paths_llvm,
             host_tools_info,
@@ -279,6 +285,7 @@ def _cc_toolchain_str(
         suffix,
         target_os,
         target_arch,
+        target_platform,
         toolchain_info,
         use_absolute_paths_llvm,
         host_tools_info):
@@ -351,7 +358,7 @@ toolchain(
         "@platforms//os:{host_os_bzl}",
     ],
     target_compatible_with = [
-        "@platforms//cpu:{target_arch}",
+        "{target_platform}",
         "@platforms//os:{target_os_bzl}",
     ],
     target_settings = {target_settings},
@@ -456,6 +463,7 @@ cc_toolchain(
         suffix = suffix,
         target_os = target_os,
         target_arch = target_arch,
+        target_platform = target_platform,
         host_os = host_os,
         host_arch = host_arch,
         target_settings = _list_to_string(_dict_value(toolchain_info.target_settings_dict, target_pair)),
