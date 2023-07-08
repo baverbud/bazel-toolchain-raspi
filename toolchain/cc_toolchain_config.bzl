@@ -59,6 +59,9 @@ def cc_toolchain_config(
         compiler,
         abi_version,
         abi_libc_version,
+        target_cpu_variant,
+        target_fpu,
+        target_float_abi
     ) = {
         "darwin-x86_64": (
             "clang-x86_64-darwin",
@@ -68,6 +71,9 @@ def cc_toolchain_config(
             "clang",
             "darwin_x86_64",
             "darwin_x86_64",
+            "unknown",
+            "unknown",
+            "unknown",
         ),
         "darwin-aarch64": (
             "clang-aarch64-darwin",
@@ -77,6 +83,9 @@ def cc_toolchain_config(
             "clang",
             "darwin_aarch64",
             "darwin_aarch64",
+            "unknown",
+            "unknown",
+            "unknown",
         ),
         "linux-aarch64": (
             "clang-aarch64-linux",
@@ -86,6 +95,21 @@ def cc_toolchain_config(
             "clang",
             "clang",
             "glibc_unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+        ),
+        "linux-arm": (
+            "clang-armv6k-linux",
+            "armv6k-unknown-linux-gnueabihf",
+            "arm",
+            "glibc_unknown",
+            "clang",
+            "clang",
+            "glibc_unknown",
+            "arm1176jzf-s",
+            "vfp",
+            "hard",
         ),
         "linux-x86_64": (
             "clang-x86_64-linux",
@@ -95,6 +119,9 @@ def cc_toolchain_config(
             "clang",
             "clang",
             "glibc_unknown",
+            "unknown",
+            "unknown",
+            "unknown",
         ),
     }[target_os_arch_key]
 
@@ -127,6 +154,22 @@ def cc_toolchain_config(
         "-Wthread-safety",
         "-Wself-assign",
     ]
+
+    if target_cpu_variant != "unknown":
+        compile_flags.extend([
+            "-mcpu=" + target_cpu_variant,
+            "-mtune=" + target_cpu_variant
+        ])
+    
+    if target_fpu != "unknown":
+        compile_flags.extend([
+            "-mfpu=" + target_fpu
+        ])
+    
+    if target_float_abi != "unknown":
+        compile_flags.extend([
+            "-mfloat-abi=" + target_float_abi
+        ])
 
     dbg_compile_flags = ["-g", "-fstandalone-debug"]
 
