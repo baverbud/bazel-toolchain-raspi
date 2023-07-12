@@ -59,7 +59,7 @@ def _sysroot_path(sysroot_dict, os, arch):
 def sysroot_paths_dict(rctx, sysroot_dict, use_absolute_paths):
     paths_dict = dict()
     labels_dict = dict()
-    for (target_os, target_arch) in _supported_targets:
+    for (target_os, target_arch, target_platform) in _supported_targets:
         path, label = _sysroot_path(
             sysroot_dict,
             target_os,

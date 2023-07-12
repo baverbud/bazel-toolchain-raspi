@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUPPORTED_TARGETS = [("linux", "x86_64"), ("linux", "aarch64"), ("darwin", "x86_64"), ("darwin", "aarch64")]
+SUPPORTED_TARGETS = [("linux", "x86_64", "@platforms//cpu:x86_64"),
+                     ("linux", "aarch64", "@platforms//cpu:aarch64"), 
+                     ("linux", "armv6k", "//platforms:armv6k"),
+                     ("darwin", "x86_64", "@platforms//cpu:x86_64"),
+                     ("darwin", "aarch64", "@platforms//cpu:aarch64")]
 
 host_tool_features = struct(
     SUPPORTS_ARG_FILE = "supports_arg_file",
@@ -100,7 +104,7 @@ def arch(rctx):
 def os_arch_pair(os, arch):
     return "{}-{}".format(os, arch)
 
-_supported_os_arch = [os_arch_pair(os, arch) for (os, arch) in SUPPORTED_TARGETS]
+_supported_os_arch = [os_arch_pair(os, arch) for (os, arch, platform) in SUPPORTED_TARGETS]
 
 def supported_os_arch_keys():
     return _supported_os_arch
