@@ -99,10 +99,10 @@ def cc_toolchain_config(
             "unknown",
             "unknown",
         ),
-        "linux-arm": (
+        "linux-armv6k": (
             "clang-armv6k-linux",
             "armv6k-unknown-linux-gnueabihf",
-            "arm",
+            "armv6k",
             "glibc_unknown",
             "clang",
             "clang",
